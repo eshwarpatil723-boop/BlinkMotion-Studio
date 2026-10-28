@@ -1,0 +1,187 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BlinkMotion Studio</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px 15px;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #101828, #253b66);
+            color: white;
+            text-align: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+            margin: 30px auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.09);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 18px;
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 32px;
+        }
+
+        .subtitle {
+            color: #d5def0;
+            line-height: 1.6;
+        }
+
+        .upload-box {
+            margin: 25px 0;
+            padding: 25px;
+            border: 2px dashed #8da9ff;
+            border-radius: 12px;
+        }
+
+        input[type="file"] {
+            display: block;
+            width: 100%;
+            margin: 20px auto;
+            padding: 12px;
+            background: white;
+            color: #222;
+            border-radius: 8px;
+        }
+
+        button, .download-button {
+            display: inline-block;
+            padding: 14px 22px;
+            border: none;
+            border-radius: 8px;
+            background: #6485ff;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        button:hover, .download-button:hover {
+            background: #4969e8;
+        }
+
+        .message {
+            margin: 15px 0;
+            padding: 12px;
+            border-radius: 8px;
+            background: #7b2929;
+            overflow-wrap: anywhere;
+        }
+
+        .result {
+            margin-top: 30px;
+        }
+
+        video {
+            display: block;
+            width: 100%;
+            margin: 20px auto;
+            border-radius: 10px;
+            background: black;
+        }
+
+        .note {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #d5def0;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>✨ BlinkMotion Studio</h1>
+
+        <p class="subtitle">
+            Upload a portrait and generate a short video
+            with five scheduled blink effects.
+        </p>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="message">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="upload-box">
+
+            <form
+                action="{{ url_for('index') }}"
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                <label for="image">
+                    <strong>Select your portrait</strong>
+                </label>
+
+                <input
+                    type="file"
+                    id="image"
+                    name="image"
+                    accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+                    required
+                >
+
+                <button type="submit">
+                    Generate 5-Blink Video
+                </button>
+
+            </form>
+
+        </div>
+
+        {% if generated and video_url %}
+
+            <div class="result">
+
+                <h2>Your video is ready!</h2>
+
+                <video controls>
+                    <source src="{{ video_url }}" type="video/mp4">
+                    Your browser does not support MP4 video.
+                </video>
+
+                <a
+                    class="download-button"
+                    href="{{ video_url }}"
+                >
+                    Download MP4
+                </a>
+
+            </div>
+
+        {% endif %}
+
+        <p class="note">
+            Use a clear, front-facing portrait for the best
+            face-detection results. The current blink effect is
+            an approximation and may not look fully realistic.
+        </p>
+
+    </div>
+
+</body>
+</html>
+```
